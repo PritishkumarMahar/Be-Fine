@@ -77,3 +77,5 @@ export const resendOtp = async (req, res) => {
   await sendEmail(email, "Resend OTP", `Your OTP is ${otp}`);
   res.json({ message: "OTP resent" });
 };
+
+

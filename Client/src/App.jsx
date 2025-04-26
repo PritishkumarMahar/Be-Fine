@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Import your pages/components
@@ -17,13 +17,13 @@ import Reports from "./components/Reports";
 import Exercise from "./components/Exercise";
 import Profile from "./pages/Profile";
 const App = () => {
-  const { user, token } = useAuth(); // Access user and token
+  const { user } = useAuth(); // Access user and token
 
-  useEffect(() => {
-    // You can use the user and token for any logic
-    console.log("User:", user);
-    console.log("Token:", token);
-  }, [user, token]);
+  // useEffect(() => {
+  //   // You can use the user and token for any logic
+  //   console.log("User:", user);
+  //   console.log("Token:", token);
+  // }, [user, token]);
 
   return (
     <Router>

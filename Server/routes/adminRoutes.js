@@ -5,7 +5,9 @@ import {
   deleteUser,
   getAllLogs,
   getSystemStats,
-  addFoodItem, // Import the new controller
+  addFoodItem,
+  getFoodItem,
+  deleteFoodItem, // 🔥 Import deleteFoodItem controller
 } from "../controllers/adminController.js";
 
 import protect from "../middlewares/auth.js";
@@ -20,6 +22,9 @@ router.get("/users", getAllUsers); // View all users
 router.delete("/users/:id", deleteUser); // Delete a user
 router.get("/logs", getAllLogs); // View admin action logs
 router.get("/stats", getSystemStats); // Dashboard stats
-router.post("/food-items", addFoodItem); // Add food item (new endpoint)
+
+router.post("/food-items", addFoodItem); // Add food item
+router.get("/food-items", getFoodItem); // Get all food items
+router.delete("/food-items/:id", deleteFoodItem); // 🔥 Delete food item by ID
 
 export default router;

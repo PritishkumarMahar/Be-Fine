@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 import {
   BarChart,
   Bar,
@@ -24,13 +26,103 @@ const AdminDashboard = () => {
     status: "active",
   });
 
+  const { token } = useAuth(); // Access user and token from context
+
   // State for content management
   const [posts, setPosts] = useState([]);
-  const [newPost, setNewPost] = useState({
-    title: "",
-    category: "nutrition",
-    status: "draft",
+  const [newFoodItem, setNewFoodItem] = useState({
+    name: "",
+    calories: "",
+    carbs: "",
+    protein: "",
+    fat: "",
+    category: "",
   });
+  const [foodItems, setFoodItems] = useState([]);
+  // function to delete food item
+  const deleteFoodItem = async (id) => {
+    try {
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this food item?"
+      );
+      if (!confirmDelete) return;
+
+      await axios.delete(`http://localhost:5000/api/admin/food-items/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      alert("Food item deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting food item:", error);
+      alert("Failed to delete food item.");
+    }
+  };
+  // fetch food items from the server
+  const fetchFoodItems = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/admin/food-items",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setFoodItems(response.data); // Adjust according to your backend response
+    } catch (error) {
+      console.error("Error fetching food items:", error);
+    }
+  };
+  useEffect(() => {
+    fetchFoodItems();
+  }, [token, deleteFoodItem]); // Fetch food items when the component mounts or when a food item is deleted
+  // funaction to add food item
+  const handleAddFoodItem = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/admin/food-items",
+        {
+          name: newFoodItem.name.trim(),
+          calories: Number(newFoodItem.calories),
+          carbs: Number(newFoodItem.carbs),
+          protein: Number(newFoodItem.protein),
+          fat: Number(newFoodItem.fat),
+          category: newFoodItem.category,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Add Authorization header if needed
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      alert(res.data.message || "Food item added successfully!");
+
+      // Reset the form
+      setNewFoodItem({
+        name: "",
+        calories: "",
+        carbs: "",
+        protein: "",
+        fat: "",
+        category: "",
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      alert(
+        error.response?.data?.message ||
+          "Something went wrong while adding food item!"
+      );
+    }
+  };
 
   // State for analytics
   const [timeRange, setTimeRange] = useState("week");
@@ -138,14 +230,7 @@ const AdminDashboard = () => {
     { name: "May", users: 700 },
     { name: "Jun", users: 900 },
   ];
-
-  const postCategoryData = [
-    { name: "Nutrition", value: 35 },
-    { name: "Diet", value: 25 },
-    { name: "Exercise", value: 20 },
-    { name: "Wellness", value: 15 },
-    { name: "Recipes", value: 5 },
-  ];
+  const postCategoryData = [];
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
 
@@ -178,25 +263,6 @@ const AdminDashboard = () => {
     setNewUser({ name: "", email: "", role: "user", status: "active" });
   };
 
-  const handleAddPost = (e) => {
-    e.preventDefault();
-
-    if (!newPost.title) {
-      alert("Please enter a post title");
-      return;
-    }
-
-    const newPostWithId = {
-      ...newPost,
-      id: posts.length + 1,
-      views: 0,
-      date: new Date().toISOString().split("T")[0],
-    };
-
-    setPosts([...posts, newPostWithId]);
-    setNewPost({ title: "", category: "nutrition", status: "draft" });
-  };
-
   const toggleUserStatus = (userId) => {
     setUsers(
       users.map((user) =>
@@ -213,12 +279,6 @@ const AdminDashboard = () => {
   const deleteUser = (userId) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       setUsers(users.filter((user) => user.id !== userId));
-    }
-  };
-
-  const deletePost = (postId) => {
-    if (window.confirm("Are you sure you want to delete this post?")) {
-      setPosts(posts.filter((post) => post.id !== postId));
     }
   };
 
@@ -292,12 +352,12 @@ const AdminDashboard = () => {
             </li>
             <li>
               <button
-                onClick={() => setActiveTab("content")}
+                onClick={() => setActiveTab("food")}
                 className={`hover:underline ${
-                  activeTab === "content" ? "font-bold underline" : ""
+                  activeTab === "food" ? "font-bold underline" : ""
                 }`}
               >
-                Content
+                Food
               </button>
             </li>
             <li>
@@ -717,109 +777,164 @@ const AdminDashboard = () => {
         )}
 
         {/* Content Management Tab */}
-        {activeTab === "content" && (
+        {activeTab === "food" && (
           <div>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800">
-                Content Management
+                Food Management
               </h2>
               <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md transition">
-                + New Post
+                + New Food
               </button>
             </div>
 
             {/* Add Post Form */}
             <div className="bg-white p-6 rounded-lg shadow-md mb-8">
               <h3 className="text-lg font-bold text-gray-800 mb-4">
-                Create New Post
+                Add New Food
               </h3>
-              <form onSubmit={handleAddPost} className="space-y-4">
+              <form onSubmit={handleAddFoodItem} className="space-y-4">
+                {/* Name */}
                 <div>
-                  <label className="block text-gray-700 mb-2">Title*</label>
+                  <label className="block text-gray-700 mb-2">Food Name*</label>
                   <input
                     type="text"
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                    value={newPost.title}
+                    value={newFoodItem.name}
                     onChange={(e) =>
-                      setNewPost({ ...newPost, title: e.target.value })
+                      setNewFoodItem({ ...newFoodItem, name: e.target.value })
                     }
                     required
                   />
                 </div>
 
+                {/* Calories, Carbs, Protein, Fat */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-700 mb-2">Category</label>
-                    <select
+                    <label className="block text-gray-700 mb-2">
+                      Calories*
+                    </label>
+                    <input
+                      type="number"
                       className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                      value={newPost.category}
+                      value={newFoodItem.calories}
                       onChange={(e) =>
-                        setNewPost({ ...newPost, category: e.target.value })
+                        setNewFoodItem({
+                          ...newFoodItem,
+                          calories: e.target.value,
+                        })
                       }
-                    >
-                      <option value="nutrition">Nutrition</option>
-                      <option value="diet">Diet</option>
-                      <option value="exercise">Exercise</option>
-                      <option value="wellness">Wellness</option>
-                      <option value="recipes">Recipes</option>
-                    </select>
+                      required
+                    />
                   </div>
 
                   <div>
-                    <label className="block text-gray-700 mb-2">Status</label>
-                    <select
+                    <label className="block text-gray-700 mb-2">
+                      Carbs (g)*
+                    </label>
+                    <input
+                      type="number"
                       className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                      value={newPost.status}
+                      value={newFoodItem.carbs}
                       onChange={(e) =>
-                        setNewPost({ ...newPost, status: e.target.value })
+                        setNewFoodItem({
+                          ...newFoodItem,
+                          carbs: e.target.value,
+                        })
                       }
-                    >
-                      <option value="draft">Draft</option>
-                      <option value="published">Published</option>
-                      <option value="archived">Archived</option>
-                    </select>
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-700 mb-2">
+                      Protein (g)*
+                    </label>
+                    <input
+                      type="number"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                      value={newFoodItem.protein}
+                      onChange={(e) =>
+                        setNewFoodItem({
+                          ...newFoodItem,
+                          protein: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-700 mb-2">Fat (g)*</label>
+                    <input
+                      type="number"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                      value={newFoodItem.fat}
+                      onChange={(e) =>
+                        setNewFoodItem({ ...newFoodItem, fat: e.target.value })
+                      }
+                      required
+                    />
                   </div>
                 </div>
 
+                {/* Category */}
                 <div>
-                  <label className="block text-gray-700 mb-2">Content</label>
-                  <textarea
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 min-h-[150px]"
-                    placeholder="Write your post content here..."
-                  ></textarea>
+                  <label className="block text-gray-700 mb-2">Category*</label>
+                  <select
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    value={newFoodItem.category}
+                    onChange={(e) =>
+                      setNewFoodItem({
+                        ...newFoodItem,
+                        category: e.target.value,
+                      })
+                    }
+                    required
+                  >
+                    <option value="">Select category</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Snacks">Snacks</option>
+                  </select>
                 </div>
 
+                {/* Submit Button */}
                 <div className="flex justify-end">
                   <button
                     type="submit"
                     className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-md transition"
                   >
-                    Save Post
+                    Save Food Item
                   </button>
                 </div>
               </form>
             </div>
 
-            {/* Posts Table */}
+            {/* Foods Table */}
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Title
+                        Name
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Calories
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Carbs (g)
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Protein (g)
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Fat (g)
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Category
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Views
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Status
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Date
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Actions
@@ -827,42 +942,35 @@ const AdminDashboard = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {posts.map((post) => (
-                      <tr key={post.id}>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">
-                            {post.title}
-                          </div>
+                    {foodItems.map((item) => (
+                      <tr key={item._id}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {item.name}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {item.calories}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {item.carbs}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {item.protein}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {item.fat}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">
-                          {post.category}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {post.views}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                            ${
-                              post.status === "published"
-                                ? "bg-green-100 text-green-800"
-                                : post.status === "draft"
-                                ? "bg-yellow-100 text-yellow-800"
-                                : "bg-gray-100 text-gray-800"
-                            }`}
-                          >
-                            {post.status}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {post.date}
+                          {item.category}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <button className="text-blue-600 hover:text-blue-900 mr-2">
+                          {/* <button
+                            onClick={() => editFoodItem(item._id)}
+                            className="text-blue-600 hover:text-blue-900 mr-2"
+                          >
                             Edit
-                          </button>
+                          </button> */}
                           <button
-                            onClick={() => deletePost(post.id)}
+                            onClick={() => deleteFoodItem(item._id)}
                             className="text-red-600 hover:text-red-900"
                           >
                             Delete
