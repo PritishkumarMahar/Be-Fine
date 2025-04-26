@@ -29,7 +29,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/verify-otp/:email" element={<VerifyOtp />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/admindashboard" element={<AdminDashboard />} /> {/* Admin Route */}
+        <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
