@@ -11,7 +11,11 @@ import { useAuth } from "./context/AuthContext"; // Use auth context
 import Logout from "./pages/Logout"; // Add this import
 import AdminDashboard from "./pages/AdminDashboard";
 import ForgotPassword from "./pages/ForgotPassword";
-
+import Foodlog from "./components/Foodlog";
+import Progress from "./components/Progress";
+import Reports from "./components/Reports";
+import Exercise from "./components/Exercise";
+import Profile from "./pages/Profile";
 const App = () => {
   const { user, token } = useAuth(); // Access user and token
 
@@ -32,6 +36,12 @@ const App = () => {
         <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/food-log" element={<Foodlog></Foodlog>}></Route>
+        <Route path="/Progress" element={<Progress />} />
+        <Route path="/Reports" element={<Reports />} />
+        <Route path="/Exercise" element={<Exercise />} />
+
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

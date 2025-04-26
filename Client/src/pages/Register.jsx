@@ -105,9 +105,7 @@ const Register = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-            >
-              
-            </motion.h1>
+            ></motion.h1>
           </div>
         </div>
       </motion.header>
