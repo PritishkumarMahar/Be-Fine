@@ -44,51 +44,6 @@ const Home = () => {
         </motion.div>
       </header>
 
-      {/* Main Navigation */}
-      {/* <nav className="bg-green-600 pb-2">
-        <div className="container mx-auto">
-          <ul className="flex justify-center items-center text-white text-lg font-medium space-x-8">
-            <li>
-              <Link to="/features" className="hover:underline">
-                Features
-              </Link>
-            </li>
-            <li>
-              <span className="text-white opacity-50">•</span>
-            </li>
-            <li>
-              <Link to="/diets" className="hover:underline">
-                Diets
-              </Link>
-            </li>
-            <li>
-              <span className="text-white opacity-50">•</span>
-            </li>
-            <li>
-              <Link to="/library" className="hover:underline">
-                Library
-              </Link>
-            </li>
-            <li>
-              <span className="text-white opacity-50">•</span>
-            </li>
-            <li>
-              <Link to="/food" className="hover:underline">
-                Food
-              </Link>
-            </li>
-            <li>
-              <span className="text-white opacity-50">•</span>
-            </li>
-            <li>
-              <Link to="/business" className="hover:underline">
-                Business
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav> */}
-
       {/* Hero Section with App Screenshots */}
       <section className="bg-green-600 pt-12 pb-24 relative overflow-hidden ">
         <motion.div

@@ -11,7 +11,8 @@ const Logout = () => {
     navigate("/login"); // Redirect to login page
   }, [logout, navigate]);
 
-  return null; // or <p>Logging out...</p> if you want
+  // return null; // or
+  <p>Logging out...</p>; // or any loading indicator
 };
 
 export default Logout;
