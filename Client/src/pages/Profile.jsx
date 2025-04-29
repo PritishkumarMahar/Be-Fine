@@ -5,7 +5,7 @@ import axios from "axios";
 
 const Profile = () => {
   // User data state
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({ role: "User" });
   // Edit mode state
   const [editMode, setEditMode] = useState(false);
   // Auth context
@@ -56,10 +56,23 @@ const Profile = () => {
   };
 
   // Save changes
-  const handleSave = () => {
+  const handleSave = async () => {
     // Here you would typically send the updated data to your backend
-    console.log("Saved data:", userData);
-    setEditMode(false);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/users/me",
+        userData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Profile updated:", userData);
+      setEditMode(false); // Exit edit mode after saving
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+    }
   };
 
   return (
@@ -71,7 +84,7 @@ const Profile = () => {
             <div className="mr-2">
               <img src="/logo.png" alt="Logo" className="h-26" />
             </div>
-            <h1 className="text-white text-3xl font-bold">  </h1>
+            <h1 className="text-white text-3xl font-bold"> </h1>
           </div>
 
           <div className="flex items-center space-x-4">
@@ -201,56 +214,18 @@ const Profile = () => {
                     </div>
                     <div>
                       <label className="block text-gray-600 text-sm font-medium mb-1">
-                        Gender
-                      </label>
-                      {editMode ? (
-                        <select
-                          name="gender"
-                          value={userData.gender}
-                          onChange={handleChange}
-                          className="w-full p-2 border rounded"
-                        >
-                          <option value="Male">Male</option>
-                          <option value="Female">Female</option>
-                          <option value="Other">Other</option>
-                          <option value="Prefer not to say">
-                            Prefer not to say
-                          </option>
-                        </select>
-                      ) : (
-                        <p className="text-gray-800">{userData.gender}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="block text-gray-600 text-sm font-medium mb-1">
-                        Birthday
+                        Age
                       </label>
                       {editMode ? (
                         <input
                           type="text"
-                          name="birthday"
+                          name="age"
                           value={userData.birthday}
                           onChange={handleChange}
                           className="w-full p-2 border rounded"
                         />
                       ) : (
-                        <p className="text-gray-800">{userData.birthday}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="block text-gray-600 text-sm font-medium mb-1">
-                        Country
-                      </label>
-                      {editMode ? (
-                        <input
-                          type="text"
-                          name="country"
-                          value={userData.country}
-                          onChange={handleChange}
-                          className="w-full p-2 border rounded"
-                        />
-                      ) : (
-                        <p className="text-gray-800">{userData.country}</p>
+                        <p className="text-gray-800">{userData.age}</p>
                       )}
                     </div>
                   </div>
@@ -285,65 +260,32 @@ const Profile = () => {
                       {editMode ? (
                         <input
                           type="text"
-                          name="currentWeight"
+                          name="weight"
                           value={userData.currentWeight}
                           onChange={handleChange}
                           className="w-full p-2 border rounded"
                         />
                       ) : (
-                        <p className="text-gray-800">
-                          {userData.currentWeight}
-                        </p>
+                        <p className="text-gray-800">{userData.weight}</p>
                       )}
                     </div>
                     <div>
                       <label className="block text-gray-600 text-sm font-medium mb-1">
-                        Goal Weight
-                      </label>
-                      {editMode ? (
-                        <input
-                          type="text"
-                          name="goalWeight"
-                          value={userData.goalWeight}
-                          onChange={handleChange}
-                          className="w-full p-2 border rounded"
-                        />
-                      ) : (
-                        <p className="text-gray-800">{userData.goalWeight}</p>
-                      )}
-                    </div>
-                    <div>
-                      <label className="block text-gray-600 text-sm font-medium mb-1">
-                        Weekly Goal
+                        Goal
                       </label>
                       {editMode ? (
                         <select
-                          name="weeklyGoal"
-                          value={userData.weeklyGoal}
+                          name="goal"
+                          value={userData.goal}
                           onChange={handleChange}
                           className="w-full p-2 border rounded"
                         >
-                          <option value="Lose 2 lbs per week">
-                            Lose 2 lbs per week
-                          </option>
-                          <option value="Lose 1.5 lbs per week">
-                            Lose 1.5 lbs per week
-                          </option>
-                          <option value="Lose 1 lb per week">
-                            Lose 1 lb per week
-                          </option>
-                          <option value="Lose 0.5 lb per week">
-                            Lose 0.5 lb per week
-                          </option>
-                          <option value="Maintain current weight">
-                            Maintain current weight
-                          </option>
-                          <option value="Gain 0.5 lb per week">
-                            Gain 0.5 lb per week
-                          </option>
+                          <option value="Lose">Lose weight</option>
+                          <option value="Maintain">Maintain weight</option>
+                          <option value="Gain">Gain weight</option>
                         </select>
                       ) : (
-                        <p className="text-gray-800">{userData.weeklyGoal}</p>
+                        <p className="text-gray-800">{userData.goal}</p>
                       )}
                     </div>
                   </div>
