@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 const FoodLog = ({ burnedCalories = 0, onCaloriesUpdate, userPlan }) => {
   // State declarations
@@ -9,45 +11,30 @@ const FoodLog = ({ burnedCalories = 0, onCaloriesUpdate, userPlan }) => {
   const [totalCalories, setTotalCalories] = useState(0);
   const [showPlanModal, setShowPlanModal] = useState(false);
   const [foodsByTime, setFoodsByTime] = useState({});
-
+  const [foodItems, setFoodItems] = useState([]);
+  const { token, user } = useAuth();
   // Food database (same as before)
-  const foodItems = [
-    { name: "Rice", calories: 50, time: "lunch" },
-    { name: "Roti", calories: 80, time: "dinner" },
-    { name: "Apple", calories: 100, time: "snacks" },
-    { name: "Orange", calories: 120, time: "snacks" },
-    { name: "Milk", calories: 150, time: "breakfast" },
-    { name: "Breads", calories: 60, time: "breakfast" },
-    { name: "Mix fruits juice", calories: 200, time: "snacks" },
-    { name: "Banana Milkshake", calories: 120, time: "snacks" },
-    { name: "Mix fruits salad", calories: 300, time: "snacks" },
-    { name: "Egg Omelette", calories: 140, time: "breakfast" },
-    { name: "Sprouts Salads", calories: 150, time: "lunch" },
-    { name: "Corn Flakes With Milk", calories: 180, time: "breakfast" },
-    { name: "Chocos With Milk", calories: 280, time: "breakfast" },
-    { name: "Chicken Biryani", calories: 580, time: "lunch" },
-    { name: "Daal Makhni", calories: 120, time: "dinner" },
-    { name: "Paratha", calories: 250, time: "breakfast" },
-    { name: "Butter Chicken", calories: 300, time: "dinner" },
-    { name: "Kadhai Chicken", calories: 280, time: "dinner" },
-    { name: "Chicken 65", calories: 280, time: "lunch" },
-    { name: "Chicken Tikka", calories: 480, time: "dinner" },
-    { name: "Chicken Kabab", calories: 400, time: "dinner" },
-    { name: "Pulao Rice", calories: 120, time: "lunch" },
-    { name: "Fish Pulao", calories: 220, time: "lunch" },
-    { name: "Indian Mutton Curry", calories: 320, time: "dinner" },
-    { name: "Jeera Rice", calories: 100, time: "lunch" },
-    { name: "Paneer Pulao", calories: 170, time: "lunch" },
-    { name: "Dal Fry", calories: 100, time: "dinner" },
-    { name: "Chicken tikka masala", calories: 280, time: "dinner" },
-    { name: "Chhole Masala", calories: 120, time: "lunch" },
-    { name: "Matar Paneer", calories: 180, time: "lunch" },
-    { name: "Hyderabadi Murgh Ka Salan", calories: 290, time: "dinner" },
-    { name: "Fish Curry", calories: 250, time: "dinner" },
-    { name: "Checken roll", calories: 200, time: "snacks" },
-    { name: "ice-craem", calories: 30, time: "snacks" },
-    { name: "Ice_cream glass", calories: 30, time: "snacks" },
-  ];
+  const fetchFoodItems = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/foods/food",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // console.log("Fetched food items:", response.data);
+      setFoodItems(response.data); // Adjust according to your backend response
+    } catch (error) {
+      console.error("Error fetching food items:", error);
+    }
+  };
+  useEffect(() => {
+    // Fetch food items from the server
+    fetchFoodItems();
+  }, []); // Fetch food items on component mount
   // Save food data
   const saveFoodData = (foods) => {
     localStorage.setItem("foodLog", JSON.stringify(foods));
