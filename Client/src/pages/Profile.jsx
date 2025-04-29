@@ -1,23 +1,45 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 const Profile = () => {
   // User data state
-  const [userData, setUserData] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    gender: "Male",
-    birthday: "January 15, 1985",
-    country: "United States",
-    height: "5' 10\" (178 cm)",
-    currentWeight: "185 lbs (84 kg)",
-    goalWeight: "170 lbs (77 kg)",
-    weeklyGoal: "Lose 1 lb per week",
-    membership: "Premium Member",
-  });
-
+  const [userData, setUserData] = useState({});
   // Edit mode state
   const [editMode, setEditMode] = useState(false);
+  // Auth context
+  const { user, token } = useAuth();
+  // Check if user is logged in
+  if (!user) {
+    return <div>Please log in to view your profile.</div>;
+  }
+
+  // Fetch user data from API
+  const fetchMyProfile = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/users/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("User data:", response.data);
+      setUserData(response.data.user);
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+    }
+  };
+  // Fetch user data on component mount
+  useEffect(() => {
+    if (token && user) {
+      fetchMyProfile();
+      console.log("User data fetched:", userData);
+    }
+  }, [token, user]);
+
+  useEffect(() => {
+    console.log("User data fetched:", userData);
+  }, [userData]);
 
   // Handle input changes
   const handleChange = (e) => {
@@ -122,7 +144,7 @@ const Profile = () => {
               <div className="flex items-center">
                 <div className="mr-6">
                   <img
-                    src="/api/placeholder/120/120"
+                    src="/blank-profile-picture.webp"
                     alt="Profile"
                     className="h-24 w-24 rounded-full border-4 border-white"
                   />
@@ -139,7 +161,10 @@ const Profile = () => {
                   ) : (
                     <h2 className="text-3xl font-bold">{userData.name}</h2>
                   )}
-                  <p className="text-green-100">Member since June 2023</p>
+                  <p className="text-green-100">
+                    {userData.createdAt?.toString().slice(0, 10) ||
+                      "Loading..."}
+                  </p>
                   <div className="flex items-center mt-2">
                     <span className="bg-yellow-400 text-green-800 px-3 py-1 rounded-full text-sm font-bold">
                       {userData.membership}
