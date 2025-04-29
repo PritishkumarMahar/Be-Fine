@@ -543,11 +543,7 @@ const Dashboard = () => {
             {/* Logo and App Store Links section */}
             <div className="mb-8 md:mb-0">
               <div className="mb-6">
-                <img
-                  src="/api/placeholder/100/60"
-                  alt="Logo"
-                  className="h-16"
-                />
+                <img src="/logo.png" alt="Logo" className="h-26" />
                 <h2 className="text-green-600 text-2xl font-bold">
                   CALORIES TRACKER
                 </h2>

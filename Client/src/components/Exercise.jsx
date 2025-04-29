@@ -178,9 +178,9 @@ const Exercise = ({ onCaloriesBurnedUpdate, userPlan }) => {
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center">
             <div className="mr-2">
-              <img src="/logo.png" alt="Be~Fine Logo" className="h-12" />
+              <img src="/logo.png" alt="Be~Fine Logo" className="h-26" />
             </div>
-            <h1 className="text-white text-3xl font-bold">Be~Fine</h1>
+            <h1 className="text-white text-3xl font-bold"></h1>
           </div>
 
           <div className="flex items-center space-x-4">
@@ -345,10 +345,10 @@ const Exercise = ({ onCaloriesBurnedUpdate, userPlan }) => {
                 </div>
 
                 <Link
-                  to="/food"
+                  to="/Reports"
                   className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition w-full md:w-auto text-center shadow-md"
                 >
-                  Add Food
+                  Updates
                 </Link>
               </div>
             </div>

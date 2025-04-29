@@ -47,9 +47,9 @@ const Profile = () => {
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center">
             <div className="mr-2">
-              <img src="/api/placeholder/60/60" alt="Logo" className="h-12" />
+              <img src="/logo.png" alt="Logo" className="h-26" />
             </div>
-            <h1 className="text-white text-3xl font-bold"> Be~Fine </h1>
+            <h1 className="text-white text-3xl font-bold">  </h1>
           </div>
 
           <div className="flex items-center space-x-4">
