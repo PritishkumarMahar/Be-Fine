@@ -178,11 +178,7 @@ const Profile = () => {
                     {userData.createdAt?.toString().slice(0, 10) ||
                       "Loading..."}
                   </p>
-                  <div className="flex items-center mt-2">
-                    <span className="bg-yellow-400 text-green-800 px-3 py-1 rounded-full text-sm font-bold">
-                      {userData.membership}
-                    </span>
-                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -220,7 +216,7 @@ const Profile = () => {
                         <input
                           type="text"
                           name="age"
-                          value={userData.birthday}
+                          value={userData.age}
                           onChange={handleChange}
                           className="w-full p-2 border rounded"
                         />
@@ -255,13 +251,13 @@ const Profile = () => {
                     </div>
                     <div>
                       <label className="block text-gray-600 text-sm font-medium mb-1">
-                        Current Weight
+                        Weight
                       </label>
                       {editMode ? (
                         <input
                           type="text"
                           name="weight"
-                          value={userData.currentWeight}
+                          value={userData.weight}
                           onChange={handleChange}
                           className="w-full p-2 border rounded"
                         />
