@@ -1357,14 +1357,8 @@ const AdminDashboard = () => {
           <div className="flex flex-col md:flex-row justify-between items-start mb-10">
             <div className="mb-8 md:mb-0">
               <div className="mb-6">
-                <img
-                  src="/api/placeholder/100/60"
-                  alt="Logo"
-                  className="h-16"
-                />
-                <h2 className="text-green-600 text-2xl font-bold">
-                  Be~Fine Admin
-                </h2>
+                <img src="/logo.png" alt="Logo" className="h-26" />
+                <h2 className="text-green-600 text-2xl font-bold"></h2>
               </div>
               <p className="text-gray-600 max-w-md">
                 The complete health and wellness platform administration panel.

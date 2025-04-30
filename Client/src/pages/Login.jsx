@@ -140,7 +140,7 @@ const Login = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              Welcome Back
+              Welcome Back!
             </motion.h2>
           </div>
 
