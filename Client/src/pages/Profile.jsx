@@ -10,10 +10,6 @@ const Profile = () => {
   const [editMode, setEditMode] = useState(false);
   // Auth context
   const { user, token } = useAuth();
-  // State for profile photo upload
-  const [photoFile, setPhotoFile] = useState(null);
-  const [photoPreview, setPhotoPreview] = useState("");
-
   // Check if user is logged in
   if (!user) {
     return <div>Please log in to view your profile.</div>;
@@ -29,16 +25,10 @@ const Profile = () => {
       });
       console.log("User data:", response.data);
       setUserData(response.data.user);
-      if (response.data.user.photo) {
-        setPhotoPreview(`http://localhost:5000/uploads/${response.data.user.photo}`);
-      } else {
-        setPhotoPreview("/blank-profile-picture.webp");
-      }
     } catch (error) {
       console.error(error.response ? error.response.data : error.message);
     }
   };
-
   // Fetch user data on component mount
   useEffect(() => {
     if (token && user) {
@@ -60,19 +50,6 @@ const Profile = () => {
     }));
   };
 
-  // Handle photo change
-  const handlePhotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setPhotoFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhotoPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   // Toggle edit mode
   const toggleEditMode = () => {
     setEditMode(!editMode);
@@ -80,31 +57,8 @@ const Profile = () => {
 
   // Save changes
   const handleSave = async () => {
+    // Here you would typically send the updated data to your backend
     try {
-      // First upload photo if selected
-      if (photoFile) {
-        const formData = new FormData();
-        formData.append('photo', photoFile);
-        
-        const photoResponse = await axios.post(
-          "http://localhost:5000/api/users/upload-photo",
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        );
-        
-        // Update user data with new photo filename
-        setUserData(prev => ({
-          ...prev,
-          photo: photoResponse.data.filename
-        }));
-      }
-
-      // Then update the rest of the profile data
       const response = await axios.post(
         "http://localhost:5000/api/users/me",
         userData,
@@ -114,7 +68,6 @@ const Profile = () => {
           },
         }
       );
-      
       console.log("Profile updated:", userData);
       setEditMode(false); // Exit edit mode after saving
     } catch (error) {
@@ -202,36 +155,12 @@ const Profile = () => {
             {/* Profile Header */}
             <div className="bg-green-600 p-6 text-white">
               <div className="flex items-center">
-                <div className="mr-6 relative">
+                <div className="mr-6">
                   <img
-                    src={photoPreview || "/blank-profile-picture.webp"}
+                    src="/blank-profile-picture.webp"
                     alt="Profile"
                     className="h-24 w-24 rounded-full border-4 border-white"
                   />
-                  {editMode && (
-                    <div className="absolute bottom-0 right-0">
-                      <label className="bg-yellow-400 text-white rounded-full p-2 cursor-pointer hover:bg-yellow-500">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handlePhotoChange}
-                          className="hidden"
-                        />
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </label>
-                    </div>
-                  )}
                 </div>
                 <div>
                   {editMode ? (
