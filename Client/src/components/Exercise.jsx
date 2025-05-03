@@ -202,48 +202,48 @@ const Exercise = ({ onCaloriesBurnedUpdate, userPlan }) => {
 
       {/* Navigation */}
       <nav className="bg-green-600 pb-2">
-        <div className="container mx-auto">
-          <ul className="flex justify-center items-center text-white text-lg font-medium space-x-8">
-            <li>
-              <Link to="/dashboard" className="hover:underline font-bold">
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <span className="text-white opacity-50">•</span>
-            </li>
-            <li>
-              <Link to="/food-log" className="hover:underline">
-                Food Log
-              </Link>
-            </li>
-            <li>
-              <span className="text-white opacity-50">•</span>
-            </li>
-            <li>
-              <Link to="/exercise" className="hover:underline">
-                Exercise
-              </Link>
-            </li>
-            <li>
-              <span className="text-white opacity-50">•</span>
-            </li>
-            <li>
-              <Link to="/progress" className="hover:underline">
-                Progress
-              </Link>
-            </li>
-            <li>
-              <span className="text-white opacity-50">•</span>
-            </li>
-            <li>
-              <Link to="/reports" className="hover:underline">
-                Reports
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
+              <div className="container mx-auto">
+                <ul className="flex justify-center items-center text-white text-lg font-medium space-x-8">
+                  <li>
+                    <Link to="/dashboard" className="hover:underline font-bold">
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <span className="text-white opacity-50">•</span>
+                  </li>
+                  <li>
+                    <Link to="/food-log" className="hover:underline">
+                      Food Log
+                    </Link>
+                  </li>
+                  <li>
+                    <span className="text-white opacity-50">•</span>
+                  </li>
+                  <li>
+                    <Link to="/exercise" className="hover:underline">
+                      Exercise
+                    </Link>
+                  </li>
+                  <li>
+                    <span className="text-white opacity-50">•</span>
+                  </li>
+                  <li>
+                    <Link to="/reports" className="hover:underline">
+                      Reports
+                    </Link>
+                  </li>
+                  <li>
+                    <span className="text-white opacity-50">•</span>
+                  </li>
+                  <li>
+                    <Link to="/progress" className="hover:underline">
+                      Progress
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </nav>
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">

@@ -103,16 +103,16 @@ const Dashboard = () => {
               <span className="text-white opacity-50">•</span>
             </li>
             <li>
-              <Link to="/progress" className="hover:underline">
-                Progress
+              <Link to="/reports" className="hover:underline">
+                Reports
               </Link>
             </li>
             <li>
               <span className="text-white opacity-50">•</span>
             </li>
             <li>
-              <Link to="/reports" className="hover:underline">
-                Reports
+              <Link to="/progress" className="hover:underline">
+                Progress
               </Link>
             </li>
           </ul>

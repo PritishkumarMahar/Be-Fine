@@ -119,22 +119,21 @@ const Report = () => {
               <span className="text-white opacity-50">•</span>
             </li>
             <li>
-              <Link to="/progress" className="hover:underline">
-                Progress
+              <Link to="/reports" className="hover:underline">
+                Reports
               </Link>
             </li>
             <li>
               <span className="text-white opacity-50">•</span>
             </li>
             <li>
-              <Link to="/reports" className="hover:underline">
-                Reports
+              <Link to="/progress" className="hover:underline">
+                Progress
               </Link>
             </li>
           </ul>
         </div>
       </nav>
-
       {/* Report Content */}
       <section className="py-8 bg-gray-50 min-h-screen">
         <div className="container mx-auto px-4">

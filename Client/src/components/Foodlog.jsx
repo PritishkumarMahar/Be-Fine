@@ -16,15 +16,12 @@ const FoodLog = ({ burnedCalories = 0, onCaloriesUpdate, userPlan }) => {
   // Food database (same as before)
   const fetchFoodItems = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/foods/food",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get("http://localhost:5000/api/foods/food", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       // console.log("Fetched food items:", response.data);
       setFoodItems(response.data); // Adjust according to your backend response
     } catch (error) {
@@ -171,16 +168,16 @@ const FoodLog = ({ burnedCalories = 0, onCaloriesUpdate, userPlan }) => {
               <span className="text-white opacity-50">•</span>
             </li>
             <li>
-              <Link to="/progress" className="hover:underline">
-                Progress
+              <Link to="/reports" className="hover:underline">
+                Reports
               </Link>
             </li>
             <li>
               <span className="text-white opacity-50">•</span>
             </li>
             <li>
-              <Link to="/reports" className="hover:underline">
-                Reports
+              <Link to="/progress" className="hover:underline">
+                Progress
               </Link>
             </li>
           </ul>
