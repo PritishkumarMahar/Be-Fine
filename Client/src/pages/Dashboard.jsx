@@ -586,9 +586,7 @@ const Dashboard = () => {
             <div className="mb-8 md:mb-0">
               <div className="mb-6">
                 <img src="/logo.png" alt="Logo" className="h-26" />
-                <h2 className="text-green-600 text-2xl font-bold">
-                  CALORIES TRACKER
-                </h2>
+                <h2 className="text-green-600 text-2xl font-bold"></h2>
               </div>
 
               <div className="flex items-center mb-4">

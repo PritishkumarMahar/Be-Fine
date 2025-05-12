@@ -202,48 +202,48 @@ const Exercise = ({ onCaloriesBurnedUpdate, userPlan }) => {
 
       {/* Navigation */}
       <nav className="bg-green-600 pb-2">
-              <div className="container mx-auto">
-                <ul className="flex justify-center items-center text-white text-lg font-medium space-x-8">
-                  <li>
-                    <Link to="/dashboard" className="hover:underline font-bold">
-                      Dashboard
-                    </Link>
-                  </li>
-                  <li>
-                    <span className="text-white opacity-50">•</span>
-                  </li>
-                  <li>
-                    <Link to="/food-log" className="hover:underline">
-                      Food Log
-                    </Link>
-                  </li>
-                  <li>
-                    <span className="text-white opacity-50">•</span>
-                  </li>
-                  <li>
-                    <Link to="/exercise" className="hover:underline">
-                      Exercise
-                    </Link>
-                  </li>
-                  <li>
-                    <span className="text-white opacity-50">•</span>
-                  </li>
-                  <li>
-                    <Link to="/reports" className="hover:underline">
-                      Reports
-                    </Link>
-                  </li>
-                  <li>
-                    <span className="text-white opacity-50">•</span>
-                  </li>
-                  <li>
-                    <Link to="/progress" className="hover:underline">
-                      Progress
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </nav>
+        <div className="container mx-auto">
+          <ul className="flex justify-center items-center text-white text-lg font-medium space-x-8">
+            <li>
+              <Link to="/dashboard" className="hover:underline font-bold">
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <span className="text-white opacity-50">•</span>
+            </li>
+            <li>
+              <Link to="/food-log" className="hover:underline">
+                Food Log
+              </Link>
+            </li>
+            <li>
+              <span className="text-white opacity-50">•</span>
+            </li>
+            <li>
+              <Link to="/exercise" className="hover:underline">
+                Exercise
+              </Link>
+            </li>
+            <li>
+              <span className="text-white opacity-50">•</span>
+            </li>
+            <li>
+              <Link to="/reports" className="hover:underline">
+                Reports
+              </Link>
+            </li>
+            <li>
+              <span className="text-white opacity-50">•</span>
+            </li>
+            <li>
+              <Link to="/progress" className="hover:underline">
+                Progress
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
@@ -489,19 +489,21 @@ const Exercise = ({ onCaloriesBurnedUpdate, userPlan }) => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-50 border-t border-gray-200 py-8">
+      <footer className="bg-gray-50 py-10 border-t border-gray-200">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm">
-            <p className="mb-4 md:mb-0">© 2023 Be~Fine. All rights reserved.</p>
-            <div className="flex space-x-6">
+          <div className="flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm border-t border-gray-200 pt-6">
+            <p>Copyright © 2023 Be~Fine. All rights reserved.</p>
+            <div className="flex space-x-6 mt-4 md:mt-0">
+              <Link to="/contact" className="hover:text-green-600">
+                Contact Us
+              </Link>
+              <span className="text-gray-300">|</span>
               <Link to="/privacy" className="hover:text-green-600">
                 Privacy
               </Link>
+              <span className="text-gray-300">|</span>
               <Link to="/terms" className="hover:text-green-600">
                 Terms
-              </Link>
-              <Link to="/contact" className="hover:text-green-600">
-                Contact
               </Link>
             </div>
           </div>

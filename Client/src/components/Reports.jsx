@@ -326,8 +326,22 @@ const Report = () => {
       {/* Footer */}
       <footer className="bg-gray-50 py-10 border-t border-gray-200">
         <div className="container mx-auto px-4">
-          {/* Footer content same as before */}
-          {/* ... */}
+          <div className="flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm border-t border-gray-200 pt-6">
+            <p>Copyright © 2023 Be~Fine. All rights reserved.</p>
+            <div className="flex space-x-6 mt-4 md:mt-0">
+              <Link to="/contact" className="hover:text-green-600">
+                Contact Us
+              </Link>
+              <span className="text-gray-300">|</span>
+              <Link to="/privacy" className="hover:text-green-600">
+                Privacy
+              </Link>
+              <span className="text-gray-300">|</span>
+              <Link to="/terms" className="hover:text-green-600">
+                Terms
+              </Link>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

@@ -16,7 +16,7 @@ const Home = () => {
         >
           <div className="flex items-center">
             <div className="mr-2">
-              <img src="/logo.png" alt="Logo" className="h-40" />
+              <img src="/logo.png" alt="Logo" className="h-30" />
             </div>
             <h1 className="text-white text-3xl font-bold"> </h1>
           </div>
