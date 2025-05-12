@@ -13,6 +13,8 @@ const userSchema = new mongoose.Schema(
     isVerified: { type: Boolean, default: false },
     otp: String,
     otpExpiry: Date,
+    resetToken: String,
+    resetTokenExpiry: Date,
     age: Number,
     gender: String,
     weight: Number,

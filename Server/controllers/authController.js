@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { generateOTP } from "../utils/otpGenerator.js";
 import { sendEmail } from "../utils/emailSender.js";
+import crypto from "crypto"; // for secure random token
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -65,7 +66,6 @@ export const login = async (req, res) => {
   });
 };
 
-
 export const resendOtp = async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
@@ -78,4 +78,38 @@ export const resendOtp = async (req, res) => {
   res.json({ message: "OTP resent" });
 };
 
+// ✅ Added forgotPassword controller
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
 
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetTokenExpiry = Date.now() + 1000 * 60 * 10; // 10 mins
+
+    user.resetToken = resetToken;
+    user.resetTokenExpiry = resetTokenExpiry;
+    await user.save();
+
+    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+
+    const message = `
+      <p>You requested a password reset.</p>
+      <p>Click the following link to reset your password:</p>
+      <a href="${resetUrl}">${resetUrl}</a>
+      <p>This link will expire in 10 minutes.</p>
+    `;
+
+    await sendEmail(user.email, "Password Reset Request", message);
+
+    res.status(200).json({ message: "Password reset email sent." });
+  } catch (error) {
+    console.error("Forgot Password Error:", error);
+    res.status(500).json({ message: "Error processing request" });
+  }
+};

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
@@ -10,6 +10,32 @@ const Dashboard = () => {
   const [goal, setGoal] = useState("maintain");
   const [calories, setCalories] = useState(null);
   const [bmr, setBmr] = useState(null);
+
+  // Load saved data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("userData");
+    if (savedData) {
+      const {
+        age: savedAge,
+        gender: savedGender,
+        height: savedHeight,
+        weight: savedWeight,
+        activityLevel: savedActivityLevel,
+        goal: savedGoal,
+        calories: savedCalories,
+        bmr: savedBmr,
+      } = JSON.parse(savedData);
+
+      if (savedAge) setAge(savedAge);
+      if (savedGender) setGender(savedGender);
+      if (savedHeight) setHeight(savedHeight);
+      if (savedWeight) setWeight(savedWeight);
+      if (savedActivityLevel) setActivityLevel(savedActivityLevel);
+      if (savedGoal) setGoal(savedGoal);
+      if (savedCalories) setCalories(savedCalories);
+      if (savedBmr) setBmr(savedBmr);
+    }
+  }, []);
 
   const calculateCalories = (e) => {
     e.preventDefault();
@@ -43,8 +69,24 @@ const Dashboard = () => {
         finalCalories = tdee; // maintain weight
     }
 
-    setBmr(Math.round(calculatedBmr));
-    setCalories(Math.round(finalCalories));
+    const roundedBmr = Math.round(calculatedBmr);
+    const roundedCalories = Math.round(finalCalories);
+
+    setBmr(roundedBmr);
+    setCalories(roundedCalories);
+
+    // Save all data to localStorage
+    const userData = {
+      age,
+      gender,
+      height,
+      weight,
+      activityLevel,
+      goal,
+      calories: roundedCalories,
+      bmr: roundedBmr,
+    };
+    localStorage.setItem("userData", JSON.stringify(userData));
   };
 
   return (

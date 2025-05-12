@@ -121,7 +121,7 @@ const FoodLog = ({ burnedCalories = 0, onCaloriesUpdate, userPlan }) => {
             <div className="mr-2">
               <img src="/logo.png" alt="Logo" className="h-26" />
             </div>
-            <h1 className="text-white text-3xl font-bold"> Be~Fine </h1>
+            <h1 className="text-white text-3xl font-bold"> </h1>
           </div>
 
           <div className="flex items-center space-x-4">

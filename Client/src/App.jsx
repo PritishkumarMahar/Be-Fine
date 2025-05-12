@@ -19,12 +19,6 @@ import Profile from "./pages/Profile";
 const App = () => {
   const { user } = useAuth(); // Access user and token
 
-  // useEffect(() => {
-  //   // You can use the user and token for any logic
-  //   console.log("User:", user);
-  //   console.log("Token:", token);
-  // }, [user, token]);
-
   return (
     <Router>
       <Routes>

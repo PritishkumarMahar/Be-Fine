@@ -126,7 +126,7 @@ const Register = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              Join Be~Fine
+              Join Calories Tracker 
             </motion.h2>
           </div>
 
@@ -327,7 +327,7 @@ const Register = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.1 }}
       >
-        © {new Date().getFullYear()} Be~Fine. All rights reserved.
+        © {new Date().getFullYear()} Calories Tracker. All rights reserved.
       </motion.footer>
     </div>
   );
